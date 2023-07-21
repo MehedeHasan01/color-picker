@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Color Picer</title>
+    <style>
+        .Preset-Colors, .custom-Colors{
+            display: flex;
+            flex-wrap: wrap;
+            gap: .50rem;
+            justify-content: flex-start;
+            padding: 1rem 0;
+        }
+          .color-box{
+            width: 65px;
+            height: 30px;
+            border-radius: 0.15rem;
+            cursor: pointer;
+            transition: all 0.2s;
+
+        }
+        .color-box:hover{
+            opacity: 0.9;
+            box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        label{
+            user-select: none;
+        }
+
+        /* Background Preferencs */
+        .Background-Preferencs{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .background-left-panel{
+            padding: 1rem;
+            width: 100%;
+        }
+        .background-img {
+            width: 100%;
+            padding-top: 56.25%;
+            border-radius: 0.25rem;
+            background-color: #dddeee;
+            margin-top: 0.5rem;
+            background-repeat: no-repeat !important;
+            background-size: 100% 100% !important;
+            background-position: bottom !important;
+        }
+        .lead{
+            font-size: 12px;
+            margin-bottom: -2px;
+        }
+
+
+
+
+
+        .toast-message{
+
+position: fixed;
+z-index: 999;
+top: 2rem;
+right: 2rem;
+background-color: rgb(19, 201, 110);
+color: #fff;
+border: 1px solid #fff;
+border-radius: 0.25rem;
+padding: .5rem 2rem;
+cursor: pointer;
+box-shadow: 0 4px 8px 0 rgba(0, 0,0, 0.2);}
+.toast-message-slide-in{
+animation: toast-message-slide-in  0.5s ease-in;
+}
+.toast-message-slide-out{
+animation: toast-message-slide-out  0.5s ease-in;
+}
+@keyframes toast-message-slide-in{
+            from {
+                transform: translateX(200px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0px);
+                opacity: 1;
+            }
+        }
+        @keyframes toast-message-slide-out{
+            from {
+                transform: translateX(0px);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(200px);
+                opacity: 0;
+            }
+        };
+
+    </style>
+
+</head>
+<body style="background-color: #ddd8d8ce;" id="body">
+    <div class="container mt-3 mb-5 shadow rounded-1" style="width: 30rem;
+    height: auto;
+    background-color: #fffffffb;" id="menu">
+<!--   section-1  -->
+
+<div class="container pt-3">
+    <div class="d-flex justify-content-between " style="margin-bottom: -10px;">
+        <p class="fs-6 text-black">Display Color</p>
+        <button class="badge text-danger border-0 bg-transparent pb-3" id="RamdomColorBtn">Random Color</button>
+    </div>
+    <hr class="mt-0">
+    <div class="container border border-1 border-black border-opacity-10" style="width: 27rem; height: 7rem; background-color: #ddd8d8ce;" id="color-dispalay"></div>
+</div>
+
+<div class="container mt-4">
+
+      <!--     section-2 Save & copy-btn -->
+
+    <div class="d-flex justify-content-between" style="margin-bottom: -10px;">
+        <p class="fs-6 text-black">Change & Copy Color</p>
+       <div>
+
+        <button class="badge text-danger border-0 bg-transparent pb-3" id="Save-To-Custom">Save</button>
+
+        <button class="badge text-danger border-0 bg-transparent pb-3" id="Copy-To-Clipboard">Copy</button>
+       </div>
+    </div>
+    <hr class="mt-0">
+
+<!--   Select Copy Mode Hex & RGB  -->
+    <div class="d-flex justify-content-between">
+        <div class="text-black fs-6"><small>Select Copy Mode</small></div>
+        <div>
+
+            <input value="hex" type="radio" name="color-mode" id="Color-Mode-Hex" style="font-size: 2px;" checked>
+            <label for="Color-Mode-Hex" class="me-2 text-black">Hex</label>
+
+            <input type="radio" name="color-mode" id="Color-Mode-RGB" value="rgb">
+            <label for="Color-Mode-RGB"  class="me-3 text-black">RGB</label>
+
+        </div>
+
+    </div>
+
+    <!--     section-3  Input-Hex & RGB color -->
+
+    <div class="d-flex justify-content-between mt-3">
+        <div>
+            Hex
+            <div class="input-group input-group-sm">
+                <label class="input-group-text">#</label>
+            <input type="text" class="form-control form-control-sm" id="input-Hex" value="DDDEEE">
+            </div>
+        </div>
+
+        <div>
+            RGB
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control form-control-sm ps-5 bg-transparent" value="rgb(221, 222, 238)" id="input-RGB" disabled>
+            </div>
+        </div>
+    </div>
+
+<!--     section-4  Slider Color Maker -->
+   <p class="mt-5 text-black">Adjust RGB Colors
+   </p>
+
+<div class="d-flex justify-content-between mt-3 mb-3">
+
+    <div>
+        <div class="d-flex justify-content-between" style="margin-bottom: -20px; font-size: 14px;">
+            <p class="text">Red</p>
+            <p class="text-2"  id="color-slider-red-label">221</p>
+        </div>
+        <input
+         type="range"
+         min="0"
+         max="255"
+         value="221"
+         id="color-slider-red"
+         style="height: 7px;"
+
+        >
+    </div>
+    <div >
+        <div class="d-flex justify-content-between" style="margin-bottom: -20px; font-size: 14px;">
+            <p class="text">Green</p>
+            <p class="text-2" id="color-slider-green-label">222</p></div>
+            <input
+            type="range"
+            min="0"
+            max="255"
+            value="222"
+            id="color-slider-green"
+            style="height: 7px;"
+           >
+    </div>
+    <div>
+        <div class="d-flex justify-content-between" style="margin-bottom: -20px; font-size: 14px;">
+            <p class="text">Blue</p>
+            <p class="text-2" id="color-slider-blue-label">238</p></div>
+            <input
+            type="range"
+            min="0"
+            max="255"
+            value="238"
+            id="color-slider-blue"
+            style="height: 7px;"
+           >
+    </div>
+</div>
+<div>
+</div>
+
+<!-- Color  Preset -->
+<section>
+    <p class="text-black" style="margin-bottom: 6px;">Preset Colors</p>
+<hr class="mt-0">
+
+<div class="Preset-Colors" id="Preset-Colors">
+
+</div>
+</section>
+
+<!-- Color  Custom -->
+<section>
+    <p class="text-black" style="margin-bottom: 6px;">Custom Colors</p>
+<hr class="mt-0">
+
+<div class="custom-Colors" id="Custom-Colors">
+
+</div>
+</section>
+
+
+<!-- Background Preferencs -->
+
+<section>
+    <p class="text-black" style="margin-bottom: 6px;">Background Preferencs</p>
+<hr class="mt-0">
+
+
+<div class="Background-Preferencs">
+
+    <div class="background-left-panel">
+        <p class="lead fw-bold">Background Preview</p>
+
+        <div class="background-img" id="bg-preview"></div>
+
+        <div class="background-control d-flex ">
+         <input type="file"
+         class="file-input d-none"
+         id="bg-file-input"
+         accept="image/*"
+         >
+         <button class="badge text-black fw-bold p-2 me-2 border-0  mt-1" id="bg-file-remove-btn">Remove</button>
+
+         <button class="badge text-black fw-bold p-2 border-0  mt-1" id="bg-file-input-btn">Upload</button>
+
+
+        </div>
+    </div>
+
+    <div class="mt-4 mb-5" id="bg-controller">
+        <label for="bg-size" class="mb-2">Background Size</label>
+        <select class="form-select form-select-sm" id="bg-size">
+            <option value="auto">Auto</option>
+            <option value="inherit">Inherit</option>
+            <option value="contain">Contain</option>
+            <option value="cover">Cover</option>
+        </select>
+        <label for="bg-repeat" class="mb-2 mt-3">Background Repeat</label>
+        <select id="bg-repeat" class="form-select form-select-sm">
+            <option value="repeat">Repeat</option>
+            <option value="no-repeat">No-Repeat</option>
+        </select>
+
+        <label for="bg-position" class="mb-2 mt-3">Background Position</label>
+        <select id="bg-position" class="form-select form-select-sm">
+            <option value="inherit">Inherit</option>
+            <option value="initial">Initial</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
+            <option value="unset">Unset</option>
+            <option value="center">Center</option>
+        </select>
+
+
+        <label for="bg-attachment" class="mb-2 mt-3" >Background Attachment</label>
+        <select id="bg-attachment" class="form-select form-select-sm">
+            <option value="scroll">Scroll</option>
+            <option value="fixed">Fixed</option>
+            <option value="local">Local</option>
+            <option value="inherit">Inherit</option>
+            <option value="initial">Initial</option>
+            <option value="unset">Unset</option>
+        </select>
+
+    </div>
+
+</div>
+
+
+</section>
+
+
+
+</div>
+ </div>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
